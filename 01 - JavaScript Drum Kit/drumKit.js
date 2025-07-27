@@ -1,35 +1,16 @@
-// lets start by applying the style upon clicking the A keyboard button
+window.addEventListener("keydown", (e) => {
+  const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+  const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
 
-let allKeyDownsFromDrums = [];
-window.addEventListener("keydown", (event) => {
-  const keyPress = event.key.toUpperCase();
-  const drums = document.querySelectorAll("kbd");
-  let parentElementOfDrum = null;
-  let selectedDrum = null;
+  if (!audio) return;
 
-  drums.forEach((drum) => {
-    if (drum.innerText === keyPress) {
-      selectedDrum = drum;
-      parentElementOfDrum = selectedDrum.parentElement;
-      selectedDrum.parentElement.classList.add("playing");
-      allKeyDownsFromDrums = [...allKeyDownsFromDrums, selectedDrum];
-    }
-  });
-
-  if (selectedDrum) {
-    const soundNode = parentElementOfDrum.querySelector("span");
-
-    playSound(soundNode);
-  }
+  key.classList.add("playing");
+  audio.currentTime = 0;
+  audio.play();
 });
 
-const playSound = (soundName) => {
-  var audio = new Audio(`./sounds/${soundName.innerText}.wav`);
-  audio.play();
-};
+window.addEventListener("keyup", (e) => {
+  const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
 
-window.addEventListener("keyup", (event) => {
-  allKeyDownsFromDrums.forEach((drum) =>
-    drum.parentElement.classList.remove("playing")
-  );
+  key.classList.remove("playing");
 });
