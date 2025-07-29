@@ -1,21 +1,18 @@
 const panels = document.querySelectorAll(".panel");
 
-panels.forEach((panel) => {
-  const allPElements = panel.querySelectorAll("p");
-  panel.addEventListener("mouseenter", (e) => {
-    allPElements[0].style.transform = "none";
-    allPElements[2].style.transform = "none";
+function toggleOpen() {
+  console.log("Hello");
+  this.classList.toggle("open");
+}
 
-    panel.style.flexGrow = "2";
+function toggleActive(e) {
+  console.log(e.propertyName);
+  if (e.propertyName.includes("flex")) {
+    this.classList.toggle("open-active");
+  }
+}
 
-    panel.classList.add("open");
-  });
-
-  panel.addEventListener("mouseleave", (e) => {
-    allPElements[0].style.transform = "translateY(-100%)";
-    allPElements[2].style.transform = "translateY(100%)";
-    panel.style.flexGrow = "1";
-
-    panel.classList.remove("open");
-  });
-});
+panels.forEach((panel) => panel.addEventListener("click", toggleOpen));
+panels.forEach((panel) =>
+  panel.addEventListener("transitionend", toggleActive)
+);
