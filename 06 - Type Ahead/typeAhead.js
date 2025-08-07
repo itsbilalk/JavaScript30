@@ -40,11 +40,31 @@ inputField.addEventListener("input", (e) => {
       cityObject.state.toLowerCase().includes(input)
   );
 
-  filteredCities.forEach((city) => {
-    const li = document.createElement("li");
-    li.innerText = `${city.city}`;
-    list.appendChild(li);
-  });
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  const html = filteredCities
+    .map((place) => {
+      const regex = new RegExp(input, "gi");
+      const cityName = place.city.replace(
+        regex,
+        `<span class="hl">${input}</span>`
+      );
+      const stateName = place.state.replace(
+        regex,
+        `<span class="hl">${input}</span>`
+      );
+      return `
+      <li>
+        <span class="name">${cityName}, ${stateName}</span>
+        <span class="population">${numberWithCommas(place.population)}</span>
+      </li>
+    `;
+    })
+    .join("");
+
+  list.innerHTML = html;
 
   console.log(filteredCities);
 });
